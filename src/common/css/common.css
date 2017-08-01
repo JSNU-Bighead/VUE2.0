@@ -1,0 +1,84 @@
+html,body,#app{
+    height: 100%;
+    font-family: tahoma,"Microsoft YaHei","Hiragino Sans GB",Arial,sans-serif;
+    font-size: 13px;
+    color: #333;
+}
+a{
+    text-decoration: none;
+}
+.panel{
+    display: block;
+    min-height: 100%;
+    background-color: #f3f3f3;
+    min-width: 1024px;
+    position: relative;
+}
+.panel-left{
+    background: #2e3f4f;
+    transition: width .2s;
+    position: fixed;
+    width: 220px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.panel-left .header{
+    font-size: 20px;
+    line-height: 1.25em;
+    padding: .85em 1rem;
+    margin: 0;
+    color: #fff;
+    font-weight: 400;
+    white-space: nowrap;
+}
+.panel-left .menu{
+    box-sizing: border-box;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    width: 220px;
+    color: #a6aebc;
+    background: #2e3f4f;
+}
+.panel-left .menu .menu-item{
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;
+    background-color: #2e3f4f;
+}
+.panel-left .menu .menu-item a{
+    color: #ccc;
+    display: block;
+    padding: .8em 1.5rem;
+}
+.panel-left .menu .menu-item:hover a{
+    background-color: #273746;
+    color: white;
+}
+.panel-right{
+    box-sizing: border-box;
+    position: relative;
+    padding-bottom: 49px;
+    transition: width .2s;
+    margin-left: 220px;
+}
+.footer{
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
+    line-height: 1.5;
+    padding: 1em 0;
+    color: #999;
+    margin: 0;
+    padding-left: 220px;
+    box-sizing: border-box;
+}
