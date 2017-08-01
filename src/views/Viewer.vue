@@ -23,9 +23,9 @@
                         isPDF:true
                     },
                     {
-                        fileName: "柯基犬.jpeg",
+                        fileName: "柯基犬.jpg",
                         filePath:"https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=f685709bf303738dde4a0b248b20d76c/77c6a7efce1b9d16b27e955af6deb48f8c54644b.jpg",
-                        fileType:"JPEG",
+                        fileType:"JPG",
                         isImage:true,
                         isPDF:false
                     },
