@@ -32,8 +32,9 @@
                 required:true
             },
             limitLength:{
+                type: Number,
                 required:false,
-                default: 10
+                default: Infinity
             },
             valueKey:{
                 type: String,
