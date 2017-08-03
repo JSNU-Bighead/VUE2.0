@@ -36,7 +36,7 @@
 
 |字段名      | 类型  |默认值   |描述           |
 |-----------|-------|---------|--------------|
-|fileNme    |String |''       |文件名称       |
+|fileName   |String |''       |文件名称       |
 |fileType   |String |required |文件类型       |
 |filePath   |String |required |可访问文件路径  |
 
