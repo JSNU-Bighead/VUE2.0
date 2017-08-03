@@ -1,10 +1,16 @@
 # vue 2.0 组件 使用文档
 ## select 组件
-`<v-select :list="list" v-model.number="code" :limit-length="4" value-key="code" option-key="name" @change="changeFn"></v-select>`
-### list: 下拉数据源
-### v-model: 实例中绑定的值
-### limitLength: 下拉最多显示多少项
-### vauleKey: 下拉每一项绑定的值
-### optionKey: 下拉展示的值
-### change: 绑定值变化出发的事件，传出下拉项为第一个参数
+`<v-select :list="list" v-model.number="code" value-key="code" option-key="name" :limit-length="4"></v-select>`
+###API of Select
+#### 属性
+属性名|类型|默认值|描述
+list|Array|必传|选项数据
+vauleKey|String|必传|选项绑定的值
+optionKey|String|必传|选项中展示的文字内容
+disabled|Boolean|false|下拉是否可用
+limitLength|Number|Infinity|下拉最多显示多少项
+#### 事件
+事件名|参数|描述
+input|value：当前选中的值，由vauleKey决定|选项发生改变时触发
+change|item：当前选中的选项对象|和input同时触发，不同的是 change 始终返回的是选项对象，不受 value-key 的影响
 
