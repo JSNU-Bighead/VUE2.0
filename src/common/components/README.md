@@ -42,5 +42,10 @@
 |fileType   |String |required |文件类型       |
 |filePath   |String |required |可访问文件路径  |
 
+### 方法
+
+|方法名      |描述           |
+|-----------|--------------|
+|showFn     |查看文件|
 
 
