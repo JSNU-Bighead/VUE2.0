@@ -4,7 +4,6 @@
 `<v-select :list="list" v-model.number="code" value-key="code" option-key="name" :limit-length="4"></v-select>`
 
 ### API of Select
-`<v-viewer :viewer-list="viewerData"></v-viewer>`
 
 #### 属性
 
@@ -24,6 +23,8 @@
 |change |item：当前选中的选项对象           |和input同时触发，不同的是 change 始终返回的是选项对象，不受 valueKey 的影响 |
 
 ## viewer 组件
+
+`<v-viewer :viewer-list="viewerData"></v-viewer>`
 
 ### API of Viewer
 
