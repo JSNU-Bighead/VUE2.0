@@ -203,6 +203,31 @@
                 document.removeEventListener('mousemove',this.listenFn)
             }
         },
+        created(){
+            this.viewerList.map(item=>{
+                item.isImage = false;
+        		item.isPDF = false;
+                if(!item.fileType) {
+                    console.log(item.fileName + '文件类型未定义！')
+                    return;
+                }
+                switch(item.fileType.toLowerCase()) {
+        			case 'gif':
+        			case 'jpg':
+        			case 'jpeg':
+        			case 'bmp':
+        			case 'png':
+        			case 'iff':
+        				item.isImage = true;
+        				break;
+        			case 'pdf':
+        				item.isPDF = true;
+        				break;
+        			default: 
+        				break;
+        		}
+            })
+        },
         mounted(){
             window.onresize = function() {
                 if(!this.show) return;
