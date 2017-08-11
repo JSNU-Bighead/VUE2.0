@@ -207,6 +207,9 @@
             this.viewerList.map(item=>{
                 item.isImage = false;
         		item.isPDF = false;
+                if (item.fileName != null && item.fileName != undefined) {
+                    item.fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1).toUpperCase();
+                }
                 if(!item.fileType) {
                     console.log(item.fileName + '文件类型未定义！')
                     return;
