@@ -120,9 +120,9 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
-    display: table;
+    display: display;
     bottom: 0;
-    overflow: auto;
+    overflow: hidden;
     transition: opacity .3s ease;
 }
 .viewer-modal-wrapper .viewer-modal {
