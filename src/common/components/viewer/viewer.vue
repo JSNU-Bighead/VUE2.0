@@ -1,17 +1,18 @@
 <template>
     <div style="display:inline-block;">
-        <slot>
+        <!-- <slot>
             <div class="btn" @click="showFn">查看文件</div>
-        </slot>
+        </slot> -->
         <div class="viewer-modal-wrapper" v-if="show" ref="viewer">
             <div class="viewer-modal">
                 <div class="close" @click="closeFn"></div>
                 <div class="viewer-content-wrapper" ref="content">
-                    <div class="viewer-content-item" v-for="(item,$index) in viewerList" v-if="$index == currentNav">
+                    <div class="viewer-content-item" v-for="(item,$index) in fileList" v-if="$index == currentNav">
                         <template v-if="item.isImage">
                             <div class="viewer-imgbar" :style="{marginTop: item.marginTop + 'px'}" :key="item.filePath">
                                 <img class="drag-able" v-bind:src="item.filePath" v-on:mousedown="startMoveFn" v-on:mouseup="endMoveFn" v-on:mousewheel="mouseWheelFn" v-on:DOMMouseScroll="mouseWheelFn" @load="marginInitFn($event,$index)" :style="{transform:item.transform}">
                             </div>
+                            {{item.marginTop}}
                             <div class="viewer-tool" v-on:mouseenter="endMoveFn">
                                 <ul>
                                     <li v-on:click="resetFn"></li>
@@ -29,14 +30,14 @@
                             <div class="cant-icon"></div>
                             <p class="cant-text">
                                 抱歉，此文件暂不能预览。
-                                <a :href="item.filePath" style="color:#f7822e">点击下载...</a>
+                                <a :href="item.filePath" style="color:#f7822e" download>点击下载...</a>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="viewer-nav-wrapper" ref="nav">
                     <ul class="viewer-nav-list">
-                        <li v-for="(item,$index) in viewerList" v-bind:class="{current: $index == currentNav}" v-on:click="moveFn($index)">
+                        <li v-for="(item,$index) in fileList" v-bind:class="{current: $index == currentNav}" v-on:click="moveFn($index)">
                             <span v-if="!item.isImage" class="file-type" v-text="item.fileType" v-bind:title="item.fileName"></span>
                             <img v-else v-bind:src="item.filePath" v-bind:title="item.fileName">
                         </li>
@@ -47,7 +48,7 @@
     </div>
 </template>
 <script>
-    import '../viewer/viewer.css'
+    import './viewer.css'
     export default {
         name: 'viewer',
         data() {
@@ -68,6 +69,39 @@
                 required: true
             }
         },
+        computed:{
+            fileList(){
+                let arr = this.viewerList.concat();
+                for(let i = 0; i < arr.length; i++){
+                    let item = arr[i];
+                    item.isImage = false;
+                    item.isPDF = false;
+                    if (item.fileName != null && item.fileName != undefined) {
+                        item.fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1).toUpperCase();
+                    }
+                    if(!item.fileType) {
+                        console.log(item.fileName + '文件类型未定义！')
+                        break;
+                    }
+                    switch(item.fileType.toLowerCase()) {
+                        case 'gif':
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'bmp':
+                        case 'png':
+                        case 'iff':
+                            item.isImage = true;
+                            break;
+                        case 'pdf':
+                            item.isPDF = true;
+                            break;
+                        default: 
+                            break;
+                    }
+                }
+                return arr
+            }
+        },
         methods: {
             showFn() {
                 this.$emit('open')
@@ -80,7 +114,7 @@
             closeFn() {
                 this.resetFn();
                 this.currentNav = 0;
-                document.querySelector("body").style.overflow = 'auto';
+                document.querySelector("body").style.overflow = 'initial';
                 this.show = false;
                 this.$emit('closed')
             },
@@ -88,7 +122,11 @@
                 let imgBar = e.target.parentNode;
                 let marginTop = (this.$refs.content.clientHeight - 40 - imgBar.clientHeight) / 2;
                 marginTop = marginTop > 0 ? marginTop : 0;
-                this.$set(this.viewerList[index],'marginTop',marginTop)
+                debugger
+                this.$set(this.fileList[index],'marginTop',marginTop)
+                this.$nextTick(()=>{
+                    this.$forceUpdate();
+                })
             },
             moveFn(index){
                 this.resetFn();
@@ -153,7 +191,7 @@
             },
             transformFn(transformObj) {
                 let transform = 'scale(' + transformObj.x + ',' + transformObj.y + ')' + 'rotate(' + transformObj.deg + 'deg)';
-                this.$set(this.viewerList[this.currentNav],'transform',transform)
+                this.$set(this.fileList[this.currentNav],'transform',transform)
             },
             //滚轮事件
             mouseWheelFn() {
@@ -201,38 +239,16 @@
             },
             endMoveFn(){
                 document.removeEventListener('mousemove',this.listenFn)
+            },
+            init(){
+                
             }
         },
         created(){
-            this.viewerList.map(item=>{
-                item.isImage = false;
-        		item.isPDF = false;
-                if (item.fileName != null && item.fileName != undefined) {
-                    item.fileType = item.fileName.substring(item.fileName.lastIndexOf('.') + 1).toUpperCase();
-                }
-                if(!item.fileType) {
-                    console.log(item.fileName + '文件类型未定义！')
-                    return;
-                }
-                switch(item.fileType.toLowerCase()) {
-        			case 'gif':
-        			case 'jpg':
-        			case 'jpeg':
-        			case 'bmp':
-        			case 'png':
-        			case 'iff':
-        				item.isImage = true;
-        				break;
-        			case 'pdf':
-        				item.isPDF = true;
-        				break;
-        			default: 
-        				break;
-        		}
-            })
+            this.init();
         },
         mounted(){
-            window.onresize = function() {
+            window.onresize = ()=>{
                 if(!this.show) return;
                 this.moveFn(this.currentNav);
                 let imgBar = this.$refs.content.querySelector('img');   
@@ -240,32 +256,9 @@
                     this.resetFn();
                     let marginTop = (this.$refs.content.clientHeight - 40 - imgBar.clientHeight) / 2;
                     marginTop = marginTop > 0 ? marginTop : 0;
-                    this.$set(this.viewerList[this.currentNav],'marginTop',marginTop)
+                    this.$set(this.fileList[this.currentNav],'marginTop',marginTop)
                 }
-            }.bind(this);
-        }
+            };
+        },
     }
 </script>
-<style>
-    .btn{
-        cursor: pointer;
-        white-space: nowrap;
-        color: rgba(0,0,0,.8);
-        border: none;
-        background: #27ab8d;
-        border-color: #27ab8d;
-        border-radius: 3px;
-        vertical-align: middle;
-        font-size: 12px;
-        font-family: 'microsoft yahei';
-        height: 24px;
-        line-height: 22px;
-        padding: 0 1em;
-        min-width: 24px;
-        position: relative;
-        border-width: 1px;
-        border-style: solid;
-        color: #fff;
-
-    }
-</style>
